@@ -1,0 +1,18 @@
+---
+title: "inovick_OriginalHomeworkCode_03"
+output: html_document
+---
+## Loading the data
+```{r}
+library("curl")
+library("ggplot2")
+f <- curl("https://raw.githubusercontent.com/fuzzyatelin/fuzzyatelin.github.io/master/AN588_Fall21/zombies.csv")
+d <- read.csv(f, header = TRUE, sep = ",", stringsAsFactors = FALSE)
+head(d)
+#getting the data from github using curl
+```
+
+##Challenge 1: Calculate the population mean and standard deviation for each quantitative random variable (height, weight, age, number of zombies killed, and years of education). NOTE: You will not want to use the built in var() and sd() commands as these are for samples. 
+```{r}
+
+```
