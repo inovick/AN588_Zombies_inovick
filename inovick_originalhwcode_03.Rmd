@@ -88,3 +88,57 @@ plot(x = age, y = height)
 plot(x = age, y = weight)
 #These variables do seem related. As an individual increases in age, they also increase in height and weight. However, weight does not have as strong a relationship to age as height does. Neither of them have an incredibly strong relationship but there is a positive trend.
 ```
+
+##Challenge 4: Using histograms and Q-Q plots, check whether the quantitative variables seem to be drawn from a normal distribution. Which seem to be and which do not (hint: not all are drawn from the normal distribution)? For those that are not normal, can you determine from which common distribution they are drawn? 
+```{r}
+hist(d$height) #normal
+hist(d$weight) #normal
+hist(d$age) #normal
+hist(d$zombies_killed) #skewed-- poisson
+hist(d$years_of_education) #skewed-- poisson
+#I just looked at the histograms to determine this. I am sure there is a better way to determine type of distribution, but this seemed like the most straightforward way?
+```
+
+##Challenge 5: Now use the sample() function to sample ONE subset of 30 zombie survivors (without replacement) from this population and calculate the mean and sample standard deviation for each variable. Also estimate the standard error for each variable, and construct the 95% confidence interval for each mean. Note that for the variables that are not drawn from the normal distribution, you may need to base your estimate of the CIs on slightly different code than for the normal… 
+```{r}
+#height
+sample_height <- sample(d$height, size = 30, replace = FALSE, prob = NULL) #separate by variable
+mean(sample_height) #67.43253
+sd(sample_height) #4.622798
+
+#weight
+sample_weight <- sample(d$weight, size = 30, replace = FALSE, prob = NULL)
+mean(sample_weight) #147.273
+sd(sample_weight) #17.2789
+
+#age
+sample_age <- sample(d$age, size = 30, replace = FALSE, prob = NULL)
+mean(sample_age) #20.27081
+sd(sample_age) #3.06221
+
+#zombies killed
+sample_zombies_killed <- sample(d$zombies_killed, size = 30, replace = FALSE, prob = NULL)
+mean(sample_zombies_killed) #2.766667
+sd(sample_zombies_killed) #1.633345
+
+#years of education
+sample_education <- sample(d$years_of_education, size = 30, replace = FALSE, prob = NULL)
+mean(sample_education) #2.933333
+sd(sample_education) #1.740657
+
+x <- sample_age
+m <- mean(x)
+normalCI = function(x, CIlevel = 0.95) {
+    upper = m + qnorm(1 - (1 - CIlevel)/2) * sqrt(var(x)/length(x))
+    lower = m + qnorm((1 - CIlevel)/2) * sqrt(var(x)/length(x))
+    ci <- c(lower, upper)
+    return(ci)
+}
+normalCI(x=mean(sample_age), 0.95)
+#I am STRUGGLING with this. I keep getting N/A as my answers. Am I doing something that's canceling out? Help lmao
+```
+
+##Challenge 6:Now draw 99 more random samples of 30 zombie apocalypse survivors, and calculate the mean for each variable for each of these samples. Together with the first sample you drew, you now have a set of 100 means for each variable (each based on 30 observations), which constitutes a sampling distribution for each variable. What are the means and standard deviations of this distribution of means for each variable? How do the standard deviations of means compare to the standard errors estimated in [5]? What do these sampling distributions look like (a graph might help here)? Are they normally distributed? What about for those variables that you concluded were not originally drawn from a normal distribution? 
+```{r}
+#oh lord please help me
+```
