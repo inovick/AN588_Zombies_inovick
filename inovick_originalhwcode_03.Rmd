@@ -44,3 +44,47 @@ x <- d$years_of_education
 sdp <- function(x) sqrt(mean((x-mean(x))^2))
 sdp(x) #1.675704
 ```
+##Challenge 2: Use {ggplot} to make boxplots of each of these variables by gender. Not sure why they are on top of each other? Did I switch up the axes?
+#Height:
+```{r}
+p <- ggplot(data = d, aes(x = height, y = gender))
+p <- p + geom_boxplot()
+p
+```
+
+#Weight
+```{r}
+p <- ggplot(data = d, aes(x = weight, y = gender))
+p <- p + geom_boxplot()
+p
+```
+
+#Age
+```{r}
+p <- ggplot(data = d, aes(x = age, y = gender))
+p <- p + geom_boxplot()
+p
+```
+
+#Zombie Killed
+```{r}
+p <- ggplot(data = d, aes(x = zombies_killed, y = gender))
+p <- p + geom_boxplot()
+p
+```
+
+#Years of education
+```{r}
+p <- ggplot(data = d, aes(x = years_of_education, y = gender))
+p <- p + geom_boxplot()
+p
+```
+
+##Challenge 3: Use {ggplot} to make scatterplots of height and weight in relation to age. Do these variables seem to be related? In what way?
+```{r}
+attach(d)
+par(mfrow = c(1, 2))
+plot(x = age, y = height)
+plot(x = age, y = weight)
+#These variables do seem related. As an individual increases in age, they also increase in height and weight. However, weight does not have as strong a relationship to age as height does. Neither of them have an incredibly strong relationship but there is a positive trend.
+```
