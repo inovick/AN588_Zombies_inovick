@@ -184,6 +184,8 @@ set.seed(1)
 s <- sample(1:nrow(d), 30, replace = F)
 d[s,] #To sample 30 people
 
+m_age <- mean(d$age[s])
+m_age
 m_zk <- mean(d$zombies_killed[s])
 m_zk
 m_yoe <- mean(d$years_of_education[s])
@@ -217,27 +219,101 @@ ci_yoe #95% CI for years of education
 
 ##Challenge 6:Now draw 99 more random samples of 30 zombie apocalypse survivors, and calculate the mean for each variable for each of these samples. Together with the first sample you drew, you now have a set of 100 means for each variable (each based on 30 observations), which constitutes a sampling distribution for each variable. What are the means and standard deviations of this distribution of means for each variable? How do the standard deviations of means compare to the standard errors estimated in [5]? What do these sampling distributions look like (a graph might help here)? Are they normally distributed? What about for those variables that you concluded were not originally drawn from a normal distribution? 
 ```{r}
-#From module 7- interesting questions to ask
-#Do it without replacement
-#Sample 100 times
+#Modified Diego's code (with permission)-- Thank you Diego!
+#age
+f <- NULL
+for (i in 1:99) {
+    f[[i]] <- sample(1:nrow(d), size = 30, replace = FALSE)
+}
+#To check the sampling
+d[f[[1]],]
 
-for (n in seq(5, 50, 5)) # samples of 5, 10, 15... for (n in seq(5, 50,
-for (n in seq(5, 50, 5)) # samples of 5, 10, 15... 5)) # samples of 5, 10,
-for (n in seq(5, 50, 5)) # samples of 5, 10, 15... 15...
-{
-    for (i in 1:50) # 50 replicates for (i in 1:50) # 50 replicates
-    {
-        x <- rnorm(n, mean = 10, sd = 2)
-        points(n, var(x))
-    }
+## This code calculates the mean for each variable of each sample
+mh <- NULL
+for (i in 1:99) {
+    mh[i] <- mean(d$height[f[[i]]])
+}
+mw <- NULL
+for (i in 1:99) {
+    mw[i] <- mean(d$weight[f[[i]]])
+}
+mzk <- NULL
+for (i in 1:99) {
+    mzk[i] <- mean(d$zombies_killed[f[[i]]])
+}
+myoe <- NULL
+for (i in 1:99) {
+    myoe[i] <- mean(d$years_of_education[f[[i]]])
+}
+ma <- NULL
+for (i in 1:99) {
+    ma[i] <- mean(d$age[f[[i]]])
 }
 
-#From module 8
-k <- 1000  # number of samples
-n <- 5  # size of each sample
-s <- NULL  # dummy variable to hold each sample
-for (i in 1:k) {
-    s[[i]] <- sample(x, size = n, replace = FALSE)
-}
-head(s)
+
+## This calculates the mean of the means of the 100 samples (this 99 and the previous one from question 5)
+m_age <- mean(d$age[s])
+m_age
+
+meanasamp <- c(ma,m_age) #age
+
+m_weight <- mean(d$weight[s])
+m_weight
+
+meanwsamp <- c(m,m_weight) #weight
+
+m_height <- mean(d$height[s])
+m_height
+
+meanhsamp <- c(mw,m_height) #height
+
+m_zk <- mean(d$zombies_killed[s])
+m_zk
+
+meanzksamp <- c(mzk,m_zk) #zombies killed
+
+m_education <- mean(d$years_of_education[s])
+m_education
+
+meanedsamp <- c(myoe,m_education) #years of education
+
+
+mean(meanhsamp)
+mean(meanwsamp)
+mean(meanzksamp)
+mean(meanedsamp)
+mean(meanasamp)
+
+## This calculates the standard deviation of the means of the 100 samples (this 99 and the previous one from question 5)
+sd(meanhsamp)
+sd(meanwsamp)
+sd(meanzksamp)
+sd(meanedsamp)
+sd(meanasamp)
+
+## When comparing with the standard errors estimated before, they are really close
+se_height <- se(d$height[s])
+se_height
+se_weight <- se(d$weight[s])
+se_weight
+se_zk <- se(d$zombies_killed[s])
+se_zk
+se_yoe <- se(d$years_of_education[s])
+se_yoe
+se_age <- se(d$age[s])
+
+se_age
+se_height
+se_weight
+se_zk
+se_yoe
+se_age
+
+hist(meanhsamp)
+hist(meanwsamp)
+hist(meanzksamp)
+hist(meanedsamp)
+hist(meanasamp)
+
+#All are normally distributed even though they aren't all from a normal distribution originally
 ```
