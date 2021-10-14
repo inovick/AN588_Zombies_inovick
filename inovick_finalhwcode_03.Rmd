@@ -97,21 +97,21 @@ weight_age
 ```{r}
 hist(d$height) #normal
 qqnorm(d$height)
-qqline(d$height)
 
 hist(d$weight) #normal
-
+qqnorm(d$weight)
 
 hist(d$age) #normal
+qqnorm(d$age)
 
-
-hist(d$zombies_killed) #skewed-- poisson
-
+hist(d$zombies_killed)#skewed-- poisson
+qqnorm(d$zombies_killed)
 
 hist(d$years_of_education) #skewed-- poisson
+qqnorm(d$years_of_education)
 
 
-#I just looked at the histograms to determine this. I am sure there is a better way to determine type of distribution, but this seemed like the most straightforward way?
+#I looked at both the histograms and Q-Qplots to determine this. I kept getting an error when using qqline saying that I had not called the plot yet.
 ```
 
 ##Challenge 5: Now use the sample() function to sample ONE subset of 30 zombie survivors (without replacement) from this population and calculate the mean and sample standard deviation for each variable. Also estimate the standard error for each variable, and construct the 95% confidence interval for each mean. Note that for the variables that are not drawn from the normal distribution, you may need to base your estimate of the CIs on slightly different code than for the normal… 
@@ -140,7 +140,10 @@ sd(sample_zombies_killed) #1.633345
 sample_education <- sample(d$years_of_education, size = 30, replace = FALSE, prob = NULL)
 mean(sample_education) #2.933333
 sd(sample_education) #1.740657
+```
 
+## Confidence intervals: Age
+```{r}
 x <- sample_age
 m <- mean(x)
 normalCI = function(x, CIlevel = 0.95) {
@@ -149,15 +152,67 @@ normalCI = function(x, CIlevel = 0.95) {
     ci <- c(lower, upper)
     return(ci)
 }
-normalCI(x=mean(sample_age), 0.95)
-#I am STRUGGLING with this. I keep getting N/A as my answers. Am I doing something that's canceling out? Help lmao
+normalCI(x=sample_age, 0.95)
+```
+## Confidence intervals: Weight
+```{r}
+x <- sample_weight
+m <- mean(x)
+normalCI = function(x, CIlevel = 0.95) {
+    upper = m + qnorm(1 - (1 - CIlevel)/2) * sqrt(var(x)/length(x))
+    lower = m + qnorm((1 - CIlevel)/2) * sqrt(var(x)/length(x))
+    ci <- c(lower, upper)
+    return(ci)
+}
+normalCI(x=sample_weight, 0.95)
+```
+##Confidence intervals: Height
+```{r}
+x <- sample_height
+m <- mean(x)
+normalCI = function(x, CIlevel = 0.95) {
+    upper = m + qnorm(1 - (1 - CIlevel)/2) * sqrt(var(x)/length(x))
+    lower = m + qnorm((1 - CIlevel)/2) * sqrt(var(x)/length(x))
+    ci <- c(lower, upper)
+    return(ci)
+}
+normalCI(x=sample_height, 0.95)
+```
+##Confidence Intervals: Zombies killed and years of education. Since this isn't a normal distribution, we are basing it off of a Poisson distribution
+```{r}
+set.seed(1)
+s <- sample(1:nrow(d), 30, replace = F)
+d[s,] #To sample 30 people
 
-#Do I use this instead?
-set <- NULL  # sets up a dummy variable to hold our 10000 simulations
-n <- 15
-for (i in 1:10000) {
-    set[i] <- mean(sample(x, n, replace = TRUE))
-} #and also material from module 8?
+m_zk <- mean(d$zombies_killed[s])
+m_zk
+m_yoe <- mean(d$years_of_education[s])
+m_yoe #Calculating the sample mean of zombies killed and years of education
+
+sd(d$zombies_killed[s])
+sd(d$years_of_education[s]) #Calculating the standard deviation of zombies killed and years of education
+
+
+## Function to calculate standard error
+se <- function(x) {
+    sd(x)/sqrt(length(x))
+}
+
+se_zk <- se(d$zombies_killed[s])
+se_zk
+se_yoe <- se(d$years_of_education[s])
+se_yoe #Calculating standard error of zombies killed and years of education
+
+#For lambda we used population mean from question 1
+lower_zk <- m_zk - qpois(1 - 0.05/2, 2.992) * se_zk
+upper_zk <- m_zk + qpois(1 - 0.05/2, 2.992) * se_zk
+ci_zk <- c(lower_zk, upper_zk)
+ci_zk #95% CI for zombies killed
+
+lower_yoe <- m_yoe - qpois(1 - 0.05/2, 2.996) * se_yoe
+upper_yoe <- m_yoe + qpois(1 - 0.05/2, 2.996) * se_yoe
+ci_yoe <- c(lower_yoe, upper_yoe)
+ci_yoe #95% CI for years of education
 ```
 
 ##Challenge 6:Now draw 99 more random samples of 30 zombie apocalypse survivors, and calculate the mean for each variable for each of these samples. Together with the first sample you drew, you now have a set of 100 means for each variable (each based on 30 observations), which constitutes a sampling distribution for each variable. What are the means and standard deviations of this distribution of means for each variable? How do the standard deviations of means compare to the standard errors estimated in [5]? What do these sampling distributions look like (a graph might help here)? Are they normally distributed? What about for those variables that you concluded were not originally drawn from a normal distribution? 
