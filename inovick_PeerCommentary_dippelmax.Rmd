@@ -21,9 +21,9 @@ mean(d$weight) #143.9075
 mean(d$age) #20.04696
 mean(d$zombies_killed) #2.992
 mean(d$years_of_education) #2.996
-
+```
 ##Calculating population SD for height, weight, age, number of zombies killed, and years of education
-##Found on stack overflow lol
+```{r}
 x <- d$height
 sdp <- function(x) sqrt(mean((x-mean(x))^2))
 sdp(x) #4.30797

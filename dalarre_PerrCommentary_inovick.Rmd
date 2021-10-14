@@ -100,11 +100,21 @@ plot(x = age, y = weight)
 
 ##Challenge 4: Using histograms and Q-Q plots, check whether the quantitative variables seem to be drawn from a normal distribution. Which seem to be and which do not (hint: not all are drawn from the normal distribution)? For those that are not normal, can you determine from which common distribution they are drawn? 
 ```{r}
-hist(d$height) #normal
+hist(d$height)#normal
+
+
 hist(d$weight) #normal
+
+
 hist(d$age) #normal
+
+
 hist(d$zombies_killed) #skewed-- poisson
+
+
 hist(d$years_of_education) #skewed-- poisson
+
+
 #I just looked at the histograms to determine this. I am sure there is a better way to determine type of distribution, but this seemed like the most straightforward way?
 
 ## Diego: You can use qqplots to make sure the normal ones are normal. For the poisson ones I don't know how to be certain about the type of distribution. What I did was simulate a poisson distribution and plot it to compare it with our data histograms.
