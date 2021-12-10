@@ -2,6 +2,10 @@
 title: "inovick_OriginalHomeworkCode_03"
 output: html_document
 ---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
 ## Loading the data
 ```{r}
 library("curl")
@@ -27,6 +31,9 @@ mean(d$weight) #143.9075
 mean(d$age) #20.04696
 mean(d$zombies_killed) #2.992
 mean(d$years_of_education) #2.996
+
+#can also use: 
+cbind(mean = apply(s, 2, mean), sd = apply(s, 2, pop_sd)) #From Natalia
 ```
 ##Calculating population SD for height, weight, age, number of zombies killed, and years of education
 ```{r}
@@ -110,7 +117,7 @@ qqnorm(d$zombies_killed)
 hist(d$years_of_education) #skewed-- poisson
 qqnorm(d$years_of_education)
 
-
+hist(rpois(1000,3)) #From Diego, to make a cleaner histogram?
 #I looked at both the histograms and Q-Qplots to determine this. I kept getting an error when using qqline saying that I had not called the plot yet.
 ```
 
@@ -217,7 +224,7 @@ ci_yoe <- c(lower_yoe, upper_yoe)
 ci_yoe #95% CI for years of education
 ```
 
-##Challenge 6:Now draw 99 more random samples of 30 zombie apocalypse survivors, and calculate the mean for each variable for each of these samples. Together with the first sample you drew, you now have a set of 100 means for each variable (each based on 30 observations), which constitutes a sampling distribution for each variable. What are the means and standard deviations of this distribution of means for each variable? How do the standard deviations of means compare to the standard errors estimated in [5]? What do these sampling distributions look like (a graph might help here)? Are they normally distributed? What about for those variables that you concluded were not originally drawn from a normal distribution? 
+##Challenge 6: Now draw 99 more random samples of 30 zombie apocalypse survivors, and calculate the mean for each variable for each of these samples. Together with the first sample you drew, you now have a set of 100 means for each variable (each based on 30 observations), which constitutes a sampling distribution for each variable. What are the means and standard deviations of this distribution of means for each variable? How do the standard deviations of means compare to the standard errors estimated in [5]? What do these sampling distributions look like (a graph might help here)? Are they normally distributed? What about for those variables that you concluded were not originally drawn from a normal distribution? 
 ```{r}
 #Modified Diego's code (with permission)-- Thank you Diego!
 #age
